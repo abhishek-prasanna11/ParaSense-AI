@@ -1,0 +1,69 @@
+- name: Deploy Semantic Paraphrase App
+  hosts: servers
+  become: true
+
+  vars:
+    app_dir: "/home/dharani-prasad-s/Documents/Software Production Engineering/paraphase_semantic_analysis"
+
+  tasks:
+
+    - name: Check if Docker is installed
+      command: docker --version
+      register: docker_check
+      ignore_errors: true
+
+    - name: Install Docker if not present
+      apt:
+        name: docker.io
+        state: present
+        update_cache: yes
+      when: docker_check.failed
+
+    - name: Ensure Docker is running
+      service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Check if Docker Compose is installed
+      command: docker compose version
+      register: compose_check
+      ignore_errors: true
+
+    - name: Install Docker Compose plugin if not present
+      apt:
+        name: docker-compose-plugin
+        state: present
+      when: compose_check.failed
+
+    - name: Stop old containers (clean)
+      shell: |
+        cd "{{ app_dir }}"
+        docker compose down || true
+
+    - name: Start application (detached)
+      shell: |
+        cd "{{ app_dir }}"
+        docker compose up -d --build
+
+    - name: Wait for backend to be ready
+      shell: |
+        for i in $(seq 1 40)
+        do
+          if curl -sf http://localhost:8000/docs > /dev/null
+          then
+            echo "Backend is UP"
+            exit 0
+          fi
+          echo "Waiting for backend... $i"
+          sleep 3
+        done
+        echo "Backend failed to start"
+        docker logs semantic-backend
+        exit 1
+
+    - name: Show backend logs
+      shell: docker logs semantic-backend
+
+    - name: Show running containers
+      command: docker ps

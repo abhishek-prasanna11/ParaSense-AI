@@ -1,0 +1,7 @@
+server.name: "semantic-kibana"
+server.host: "0.0.0.0"
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+monitoring.ui.container.elasticsearch.enabled: true
+
+# Default index pattern for our application logs
+xpack.reporting.enabled: false

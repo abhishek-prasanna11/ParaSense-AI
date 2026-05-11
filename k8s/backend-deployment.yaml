@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: semantic-backend
+  labels:
+    app: semantic-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: semantic-backend
+  template:
+    metadata:
+      labels:
+        app: semantic-backend
+    spec:
+      containers:
+      - name: semantic-backend
+        image: dharaniprasads/semantic-backend:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - configMapRef:
+            name: semantic-config
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "1Gi"
+          limits:
+            cpu: "1000m"
+            memory: "3Gi"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 300
+          periodSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10

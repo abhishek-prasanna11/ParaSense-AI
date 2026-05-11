@@ -1,0 +1,16 @@
+venv/
+__pycache__/
+*.pyc
+.git
+.gitignore
+node_modules/
+*.log
+*.pt
+*.bin
+*.h5
+# Dev-only files — not needed in production image
+evaluate_mrpc.py
+optimize_mrpc.py
+verify_bi_encoder.py
+training/
+.gitkeep

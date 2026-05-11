@@ -1,0 +1,10 @@
+cluster.name: "semantic-monitoring"
+network.host: 0.0.0.0
+discovery.type: single-node
+
+# Disable security for development (enable in production)
+xpack.security.enabled: false
+xpack.monitoring.collection.enabled: true
+
+# Performance tuning for local/demo environments
+indices.memory.index_buffer_size: "20%"

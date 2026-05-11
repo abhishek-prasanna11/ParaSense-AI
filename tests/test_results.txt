@@ -1,0 +1,22 @@
+
+--------------------------------------------------------------------------------------------------------------
+Sentence 1                             | Sentence 2                               | Score | Paraphrase?
+--------------------------------------------------------------------------------------------------------------
+Loading transformer model (mpnet) to mps...
+Found fine-tuned MPNet model at /Users/abhishek/projects/paraphase_semantic_analysis/backend/models/saved_model_mpnet, loading it...
+Model loaded successfully.
+The weather is lovely today            | It is a beautiful day outside            |  0.75 | True
+I am learning how to code              | I am studying programming                |  0.78 | True
+Can I get a glass of water?            | Could you bring me some water?           |  0.99 | True
+I love going to the beach.             | I don't love going to the beach.         |  0.17 | False
+He is always very helpful and kind.    | He is never very helpful or kind.        |  0.10 | False
+The cat jumped over the tall fence.    | The cat didn't jump over the tall fence. |  0.52 | False
+The new restaurant is incredibly good. | The new restaurant is incredibly bad.    |  0.18 | False
+This software works perfectly.         | This software fails perfectly.           |  0.60 | False
+Make sure to always wear a seatbelt.   | Make sure to never wear a seatbelt.      |  0.27 | False
+The dog chased the cat.                | The cat chased the dog.                  |  0.46 | False
+A man is playing a guitar.             | A guitar is playing a man.               |  0.39 | False
+I have exactly $100.                   | I have about $100.                       |  1.00 | True
+She passed the exam easily.            | She barely passed the exam.              |  0.32 | False
+--------------------------------------------------------------------------------------------------------------
+
