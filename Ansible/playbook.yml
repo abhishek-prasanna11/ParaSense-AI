@@ -3,7 +3,7 @@
   become: true
 
   vars:
-    app_dir: "/home/dharani-prasad-s/Documents/Software Production Engineering/paraphase_semantic_analysis"
+    app_dir: "/Users/abhishek/projects/spe endsem/CICD_Paraphase_Semantic_Analysis"
 
   tasks:
 

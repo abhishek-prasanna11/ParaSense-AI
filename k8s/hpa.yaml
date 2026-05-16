@@ -1,0 +1,24 @@
+# Horizontal Pod Autoscaler for the Semantic Backend
+# Automatically scales the backend pods based on CPU utilization.
+# When average CPU usage exceeds 50%, Kubernetes spins up more pods (up to 4).
+# When traffic drops, it scales back down to 1 pod to save resources.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: semantic-backend-hpa
+  labels:
+    app: semantic-backend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: semantic-backend
+  minReplicas: 1
+  maxReplicas: 4
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
