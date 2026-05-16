@@ -2,14 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = "dharaniprasads"
+        DOCKER_USER = "abhishekprasanna1109"
     }
 
     stages {
 
         stage('Clone Repo') {
             steps {
-                git branch: 'feature/k8s-advanced-integration', url: 'https://github.com/dharani070707/CICD_Paraphase_Semantic_Analysis.git'
+                git branch: 'main', url: 'https://github.com/abhishek-prasanna11/ParaSense-AI.git'
             }
         }
 

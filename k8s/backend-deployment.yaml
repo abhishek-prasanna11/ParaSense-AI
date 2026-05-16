@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: semantic-backend
-        image: dharaniprasads/semantic-backend:latest
+        image: abhishekprasanna1109/semantic-backend:latest
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000

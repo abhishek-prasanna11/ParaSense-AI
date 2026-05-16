@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: semantic-frontend
-        image: dharaniprasads/semantic-frontend:latest
+        image: abhishekprasanna1109/semantic-frontend:latest
         ports:
         - containerPort: 80
         envFrom:
