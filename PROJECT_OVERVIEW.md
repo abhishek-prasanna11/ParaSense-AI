@@ -817,3 +817,17 @@ The Horizontal Pod Autoscaler.
 
 ## 12. Future Improvement Plan
 As outlined in `IMPROVEMENT_PLAN.md`, the next phase involves migrating to a Multi-Task Training approach utilizing Knowledge Distillation to achieve >85% universal accuracy across highly diverse domains.
+
+---
+
+## 💬 13. Viva Voce Q&A (Infrastructure Design Decisions)
+
+### Q1: Why did we use Jenkins Credentials Manager instead of Ansible Vault?
+* **Pipeline-First Orchestration**: The CI/CD process is managed and driven by Jenkins. Jenkins must authenticateto GitHub, build and push to Docker Hub, and securely authenticate with the Kubernetes cluster *before* Ansible is triggered. Managing credentials centrally in Jenkins makes architectural sense.
+* **Console Log Masking**: Jenkins Credentials Manager has a built-in protection mechanism that automatically masks secret strings (replacing them with `****`) in build console logs. Ansible Vault does not automatically mask outputted secrets.
+* **Risk of Disk Exposure**: Ansible Vault requires storing a decryption password/file on the Jenkins runner's disk or passing it via command line parameters, which increases the security vulnerability surface. Jenkins Credentials Manager injects secrets directly into environment memory only for the duration of the execution block (`withCredentials`) without writing decrypted keys to disk.
+
+### Q2: Why did we not use Ansible Roles?
+* **Avoidance of Over-Engineering**: Ansible Roles are designed for complex, modular, and highly reusable configuration setups across large environments (e.g., maintaining full web, database, and caching servers across multi-region VMs). 
+* **Simple Automations**: Our Ansible playbooks perform extremely targeted, lightweight deployment and provisioning tasks. Using Roles would require generating a complex directory hierarchy (`tasks/`, `handlers/`, `templates/`, `vars/`, `defaults/`, `meta/`) for basic commands, introducing unnecessary cognitive overhead and cluttering the workspace.
+* **Declarative Kubernetes Paradigm**: Since Kubernetes natively handles the heavy lifting of state reconciliation, service mesh, scaling, and container configuration declaratively via YAML manifests, Ansible's role is relegated strictly to automation orchestration. A single flat playbook is simpler, cleaner, and highly maintainable for this architecture.
