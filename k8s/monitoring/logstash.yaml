@@ -19,6 +19,14 @@ data:
           source => "message"
           target => "app"
         }
+        # Fix mapping conflict: Elasticsearch expects [app][service] and [app][event] to be objects in ECS.
+        # Our python logger sends strings. We rename them here before indexing.
+        mutate {
+          rename => { 
+            "[app][service]" => "[app][logger_service]" 
+            "[app][event]" => "[app][logger_event]"
+          }
+        }
         if [app][level] {
           mutate { add_field => { "log_level" => "%{[app][level]}" } }
         }
@@ -44,7 +52,7 @@ data:
       }
 
       # Drop noisy health-check logs
-      if [app][endpoint] == "/" and [app][event] == "request_completed" {
+      if [app][endpoint] == "/" and [app][logger_event] == "request_completed" {
         drop { }
       }
     }
